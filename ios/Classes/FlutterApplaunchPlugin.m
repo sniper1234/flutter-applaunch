@@ -25,6 +25,14 @@
 }
 
 - (void)getAppLaunchURLScheme:(FlutterMethodCall*)call result:(FlutterResult)result {
+    result(_launchUrlScheme);
+}
+
+#pragma mark - AppDelegate
+
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    _launchOptions = launchOptions;
     NSMutableDictionary* scheme = [[NSMutableDictionary alloc] init];
     NSString *launchUrl = [_launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
     if (launchUrl) {
@@ -36,14 +44,6 @@
         [scheme setObject:[NSString stringWithFormat:@"%@", sourceApplication] forKey:@"source"];
     }
     _launchUrlScheme = [[NSDictionary alloc] initWithDictionary:scheme];
-    result(_launchUrlScheme);
-}
-
-#pragma mark - AppDelegate
-
-- (BOOL)application:(UIApplication *)application
-didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    _launchOptions = launchOptions;
     return YES;
 }
 

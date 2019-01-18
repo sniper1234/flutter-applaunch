@@ -77,21 +77,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    setState(() {
-      _lastLifecyleState = state;
-      if (_lastLifecyleState == AppLifecycleState.resumed) {
-        initPlatformState();
-        setState(() {
-          appState = 0;
-          index++;
-        });
-      } else if (_lastLifecyleState == AppLifecycleState.paused) {
-        setState(() {
-          appState = 1;
-        });
-        print(
+    _lastLifecyleState = state;
+    if (state == AppLifecycleState.resumed) {
+      appState = 0;
+      index++;
+    } else {
+      appState = 1;
+    }
+
+    initPlatformState();
+    print(
             'The most recent lifecycle state this widget observed was: $_lastLifecyleState.');
-      }
-    });
   }
 }

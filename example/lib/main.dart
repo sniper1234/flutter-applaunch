@@ -9,14 +9,17 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   String _platformVersion = 'Unknown';
   Map<dynamic, dynamic> _launchScheme;
   final FlutterApplaunchPlugin applaunchPlugin = new FlutterApplaunchPlugin();
 
+  int appState = 0;
+  int index = 0;
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     initPlatformState();
   }
 
@@ -54,11 +57,41 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text(
-              'Running on: $_platformVersion\nStarted URL: $_launchScheme'),
+        body: Column(
+          children: <Widget>[
+            Text('Running on: $_platformVersion\nStarted URL: $_launchScheme'),
+            Text(appState == 0 ? "onreume" + index.toString() : "onpause")
+          ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  AppLifecycleState _lastLifecyleState;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+      _lastLifecyleState = state;
+      if (_lastLifecyleState == AppLifecycleState.resumed) {
+        initPlatformState();
+        setState(() {
+          appState = 0;
+          index++;
+        });
+      } else if (_lastLifecyleState == AppLifecycleState.paused) {
+        setState(() {
+          appState = 1;
+        });
+        print(
+            'The most recent lifecycle state this widget observed was: $_lastLifecyleState.');
+      }
+    });
   }
 }

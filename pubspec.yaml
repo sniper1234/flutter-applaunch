@@ -1,6 +1,6 @@
 name: flutter_applaunch
 description: A plugin to get URL Scheme when the app is launched by another app via URL Scheme calling.
-version: 0.0.3
+version: 0.0.4
 author: caizhimin <pengfeichen.cn@gmail.com>
 homepage: https://github.com/sniper1234/flutter-applaunch
 

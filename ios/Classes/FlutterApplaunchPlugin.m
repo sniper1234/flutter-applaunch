@@ -26,6 +26,7 @@
 
 - (void)getAppLaunchURLScheme:(FlutterMethodCall*)call result:(FlutterResult)result {
     result(_launchUrlScheme);
+    _launchUrlScheme = nil;
 }
 
 #pragma mark - AppDelegate
